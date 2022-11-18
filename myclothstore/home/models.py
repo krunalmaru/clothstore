@@ -25,5 +25,5 @@ class Product(Basemodel):
     image = models.ImageField(upload_to='product/img')
     name = models.CharField(max_length=100)
     price = models.IntegerField()
-    date = models.DateField(auto_now=True)
+    date = models.DateField(auto_now_add=True)
     
