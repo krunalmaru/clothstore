@@ -20,3 +20,10 @@ class SubCategory(Basemodel):
 
     def __str__(self):
         return self.name
+
+class Product(Basemodel):
+    image = models.ImageField(upload_to='product/img')
+    name = models.CharField(max_length=100)
+    price = models.IntegerField()
+    date = models.DateField(auto_now=True)
+    
