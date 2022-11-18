@@ -23,9 +23,11 @@ class SubCategory(Basemodel):
 
 class Product(Basemodel):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default='')
-    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE,default='')
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE,default='',related_name='subcategory')
     image = models.ImageField(upload_to='product/img')
     name = models.CharField(max_length=100)
     price = models.IntegerField()
     date = models.DateField(auto_now_add=True)
     
+    def __str__(self) -> str:
+        return self.name
