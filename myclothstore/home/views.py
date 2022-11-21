@@ -36,5 +36,5 @@ def signup(request):
 
 
 def login_view(request):
-    return render(request,'home/login.html')
+    return render(request,'registration/login.html')
 
