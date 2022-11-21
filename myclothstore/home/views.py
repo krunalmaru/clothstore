@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from home.models import Category,SubCategory,Product
 from django.contrib.auth import authenticate,login,logout
 from home.models import UsercreateForm
+from django.contrib import messages
 
 
 # Create your views here.
@@ -25,6 +26,7 @@ def signup(request):
                 password = form.cleaned_data['password1'], 
             )
             login(request, new_user)
+            messages.error(request,'invalid')
             return redirect('home')
     else:
         form = UsercreateForm()
@@ -33,8 +35,3 @@ def signup(request):
         'form':form,
     }
     return render(request, 'registration/signup.html',context)
-
-
-def login_view(request):
-    return render(request,'registration/login.html')
-
