@@ -3,14 +3,15 @@ from home.models import Category,SubCategory,Product
 from django.contrib.auth import authenticate,login,logout
 from home.models import UsercreateForm
 from django.contrib import messages
-
+from django.contrib.auth.decorators import login_required
+from cart.cart import Cart
 
 # Create your views here.
 def home(request):
     category = Category.objects.all()
     categoryId = request.GET.get('category')
     if categoryId:
-        product = Product.objects.filter(subcategory=categoryId).order_by('-uid')
+        product = Product.objects.filter(subcategory=categoryId).order_by('-id')
     else:
         product = Product.objects.all()
     context = {'category':category,'product':product}
@@ -35,3 +36,30 @@ def signup(request):
         'form':form,
     }
     return render(request, 'registration/signup.html',context)
+
+def cart_add(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id = id)
+    cart.add(product=product)
+    return redirect('home')
+
+def cart_remove(request):
+    cart = Cart(request)
+    cart.clear()
+    return redirect('home')
+
+def item_increase(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id = id)
+    cart.add(product=product)
+    return redirect('home')
+
+
+def item_decrease(request, id):
+    cart = cart(request)
+    product = Product.objects.get(id=id)
+    cart.decrement(product=product)
+    return redirect('home')
+
+def cart_detail(request):
+    return render(request,'cart/cart_detail.html')

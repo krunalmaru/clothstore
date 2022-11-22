@@ -13,19 +13,19 @@ class Basemodel(models.Model):
     class Meta:
         abstract = True
 
-class Category(Basemodel):
+class Category(models.Model):
     name = models.CharField(max_length=50)
     def __str__(self):
         return self.name
 
-class SubCategory(Basemodel):
+class SubCategory(models.Model):
     name = models.CharField(max_length=150)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
 
-class Product(Basemodel):
+class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default='')
     subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE,default='',related_name='subcategory')
     image = models.ImageField(upload_to='product/img')

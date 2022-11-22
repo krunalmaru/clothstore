@@ -22,6 +22,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('signup/', views.signup, name='signup'),
-    path('accounts/', include('django.contrib.auth.urls'))
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('cart/add/<int:id>/', views.cart_add, name='cart_add'),
+    path('cart/cart_remove/', views.cart_remove, name='cart_remove'),
+    path('cart/item_increase/<int:uid>/', views.item_increase, name='item_increase'),
+    path('cart/item_decrease/<int:uid>/', views.item_decrease, name='item_decrease'),
+    path('cart/cart_detail/', views.cart_detail, name='cart_detail'),
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
