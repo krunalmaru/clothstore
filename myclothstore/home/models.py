@@ -87,3 +87,6 @@ class Order(models.Model):
     mobile = models.CharField(max_length=18)
     pincode = models.CharField(max_length=10)
     date = models.DateField(default=datetime.datetime.today)
+
+    def __str__(self) -> str:
+        return self.product.name
