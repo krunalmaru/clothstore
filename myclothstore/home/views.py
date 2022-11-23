@@ -77,3 +77,6 @@ def item_clear(request, id):
 @login_required(login_url='/accounts/login/')
 def cart_detail(request):
     return render(request,'cart/cart_detail.html')
+
+def contact_us(request):
+    return render(request, 'home/contact.html')

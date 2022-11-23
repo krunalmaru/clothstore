@@ -66,3 +66,9 @@ class UsercreateForm(UserCreationForm):
             raise forms.ValidationError(self.fields['email'].error_message['exists'])
         
         return self.cleaned_data['email']
+
+class Contact_us(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    subject = models.CharField(max_length=100)
+    message = models.TextField()
