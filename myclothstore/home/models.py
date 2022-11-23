@@ -3,6 +3,7 @@ import uuid
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
+import datetime
 
 # Create your models here.
 class Basemodel(models.Model):
@@ -75,3 +76,14 @@ class Contact_us(models.Model):
 
     def __str__(self) -> str:
         return self.email
+    
+class Order(models.Model):
+    image = models.ImageField(upload_to='product/order')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    quantity = models.CharField(max_length=5)
+    price = models.IntegerField()
+    address = models.TextField()
+    mobile = models.CharField(max_length=18)
+    pincode = models.CharField(max_length=10)
+    date = models.DateField(default=datetime.datetime.today)
