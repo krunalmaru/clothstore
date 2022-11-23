@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
-from home.models import Category,SubCategory,Product,Contact_us
+from django.shortcuts import render, redirect, HttpResponse
+from home.models import Category,SubCategory,Product,Contact_us, Order
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from home.models import UsercreateForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -88,3 +89,38 @@ def contact_us(request):
         )
         contact.save()
     return render(request, 'home/contact.html')
+
+def checkout(request):
+    if request.method == 'POST':
+        mobile = request.POST.get('mobile')
+        address = request.POST.get('address')
+        pincode = request.POST.get('pincode')
+        cart = request.session.get('cart')
+        uid = request.session.get('_auth_user_id')
+        user = User.objects.get(pk=uid)
+        print(mobile, address, pincode, cart, user)
+
+        for i in cart:
+            print(i)
+            a = int(cart[i]['price'])
+            b = cart[i]['quantity']
+            total = (a * b)
+            order= Order(
+                user = user,
+                product = cart[i]['name'],
+                price = cart[i]['price'],
+                quantity = cart[i]['quantity'],
+                image = cart[i]['image'],
+                address = address,
+                mobile = mobile,
+                total = total,
+                pincode = pincode
+
+            )
+            order.save()
+            request.session['cart'] = {}
+        return redirect('home')
+    return HttpResponse('this is checkout ')
+
+def order(request):
+    return render(request, 'home/order.html')
