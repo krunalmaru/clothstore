@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from home.models import Category,SubCategory,Product
+from home.models import Category,SubCategory,Product,Contact_us
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from home.models import UsercreateForm
@@ -79,4 +79,12 @@ def cart_detail(request):
     return render(request,'cart/cart_detail.html')
 
 def contact_us(request):
+    if request.method == "POST":
+        contact = Contact_us(
+            name = request.POST.get('name'),
+            email = request.POST.get('email'),
+            subject = request.POST.get('subject'),
+            message = request.POST.get('message')
+        )
+        contact.save()
     return render(request, 'home/contact.html')
