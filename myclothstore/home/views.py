@@ -46,20 +46,26 @@ def cart_add(request, id):
 def cart_remove(request):
     cart = Cart(request)
     cart.clear()
-    return redirect('home')
+    return redirect('cart_detail')
 
 def item_increase(request, id):
     cart = Cart(request)
     product = Product.objects.get(id = id)
     cart.add(product=product)
-    return redirect('home')
+    return redirect('cart_detail')
 
 
 def item_decrease(request, id):
-    cart = cart(request)
+    cart = Cart(request)
     product = Product.objects.get(id=id)
     cart.decrement(product=product)
-    return redirect('home')
+    return redirect('cart_detail')
+
+def item_clear(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id=id)
+    cart.remove(product)
+    return redirect('cart_detail')
 
 def cart_detail(request):
     return render(request,'cart/cart_detail.html')

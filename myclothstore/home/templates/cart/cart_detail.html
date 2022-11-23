@@ -14,11 +14,11 @@
                 <thead>
                     <tr class="cart_menu">
                         <td class="image">Item</td>
-                        <td class="description"></td>
+                        <td class="description">name</td>
                         <td class="price">Price</td>
                         <td class="quantity">Quantity</td>
                         <td class="total">Total</td>
-                        <td></td>
+                        <td class=""><a href="{% url 'cart_remove'%}">Cart Clear</a></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,29 +28,44 @@
                             <a href=""><img src="{{value.image}}" alt=""></a>
                         </td>
                         <td class="cart_description">
-                            <h4><a href="">Colorblock Scuba</a></h4>
-                            <p>Web ID: 1089772</p>
+                            <h4><a href="">{{value.name}}</a></h4>
+                            <!-- <p>Web ID: 1089772</p> -->
+                              <p></p>  
+
                         </td>
                         <td class="cart_price">
-                            <p>$59</p>
+                            <p>₹ {{value.price}}</p>
                         </td>
                         <td class="cart_quantity">
                             <div class="cart_quantity_button">
-                                <a class="cart_quantity_up" href=""> + </a>
-                                <input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-                                <a class="cart_quantity_down" href=""> - </a>
+                                <a class="cart_quantity_up" href="{% url 'item_increase' value.product_id %}"> + </a>
+                                <input class="cart_quantity_input" type="text" name="quantity" value="{{value.quantity}}" autocomplete="off" size="2">
+                                <a class="cart_quantity_down" href="{% url 'item_decrease' value.product_id %}"> - </a>
                             </div>
                         </td>
                         <td class="cart_total">
-                            <p class="cart_total_price">$59</p>
+                            <p class="cart_total_price">₹ {{value.price|multiply:value.quantity}}</p>
                         </td>
                         <td class="cart_delete">
-                            <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+                            <a class="cart_quantity_delete" href="{% url 'item_clear' key %}"><i class="fa fa-times"></i></a>
                         </td>
                     </tr>
 
                     {% endfor %}
                 </tbody>
+                <tfoot>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <hr>
+                        <h3>Sub Total</h3>
+                    </td>
+                    <td></td>
+                    <td>
+                        <hr>
+                        <h3>₹ {{cart_total_amount}}</h3>
+                    </td>
+                </tfoot>
             </table>
         </div>
     </div>
