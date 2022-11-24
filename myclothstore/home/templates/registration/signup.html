@@ -15,8 +15,9 @@
                     <h2>New User Signup!</h2>
                     <form action="" method="post" novalidate>
                         {% csrf_token %}
+                       
                         {% for field in form %}
-
+                            <p>{{error_message}}</p>
                             <p>{{field}}</p>
                             <p> {{field.errors}} </p>
                         {% endfor %}

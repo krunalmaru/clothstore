@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 import datetime
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 class Basemodel(models.Model):
@@ -64,8 +65,7 @@ class UsercreateForm(UserCreationForm):
     
     def clean_email(self):
         if User.objects.filter(email = self.cleaned_data['email']).exists():
-            raise forms.ValidationError(self.fields['email'].error_message['exists'])
-        
+            raise forms.ValidationError('Email Already Register')
         return self.cleaned_data['email']
 
 class Contact_us(models.Model):

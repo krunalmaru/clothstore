@@ -30,7 +30,6 @@ def signup(request):
                 password = form.cleaned_data['password1'], 
             )
             login(request, new_user)
-            messages.error(request,'invalid')
             return redirect('home')
     else:
         form = UsercreateForm()
@@ -98,10 +97,10 @@ def checkout(request):
         cart = request.session.get('cart')
         uid = request.session.get('_auth_user_id')
         user = User.objects.get(pk=uid)
-        print(mobile, address, pincode, cart, user)
+        # print(mobile, address, pincode, cart, user)
 
         for i in cart:
-            print(i)
+            # print(i)
             a = int(cart[i]['price'])
             b = cart[i]['quantity']
             total = (a * b)
@@ -123,4 +122,9 @@ def checkout(request):
     return HttpResponse('this is checkout ')
 
 def order(request):
+    uid = request.session.get('_auth_user_id')
+    user = User.objects.get(pk=uid)
+
+    order = Order.object.all()
+    print(user,order)
     return render(request, 'home/order.html')
