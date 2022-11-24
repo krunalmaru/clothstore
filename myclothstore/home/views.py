@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
-from home.models import Category,SubCategory,Product,Contact_us, Order
+from home.models import Category,SubCategory,Product,Contact_us, Order,Brand
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -12,11 +12,12 @@ from cart.cart import Cart
 def home(request):
     category = Category.objects.all()
     categoryId = request.GET.get('category')
+    brands = Brand.objects.all()
     if categoryId:
         product = Product.objects.filter(subcategory=categoryId).order_by('-id')
     else:
         product = Product.objects.all()
-    context = {'category':category,'product':product}
+    context = {'category':category,'product':product,'brands':brands}
     return render(request, 'home/index.html', context)
 
 
