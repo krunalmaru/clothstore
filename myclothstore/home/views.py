@@ -13,8 +13,11 @@ def home(request):
     category = Category.objects.all()
     categoryId = request.GET.get('category')
     brands = Brand.objects.all()
+    brandId =  request.GET.get('brand')
     if categoryId:
         product = Product.objects.filter(subcategory=categoryId).order_by('-id')
+    elif brandId:
+        product = Product.objects.filter(brand=brandId).order_by('-id')
     else:
         product = Product.objects.all()
     context = {'category':category,'product':product,'brands':brands}
