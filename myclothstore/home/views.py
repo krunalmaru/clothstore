@@ -118,13 +118,13 @@ def checkout(request):
             )
             order.save()
             request.session['cart'] = {}
-        return redirect('home')
+        return redirect('yourorder')
     return HttpResponse('this is checkout ')
 
 def order(request):
     uid = request.session.get('_auth_user_id')
     user = User.objects.get(pk=uid)
 
-    order = Order.object.all()
-    print(user,order)
-    return render(request, 'home/order.html')
+    order = Order.objects.filter(user=user)
+    context = {'order':order}
+    return render(request, 'home/order.html', context)
