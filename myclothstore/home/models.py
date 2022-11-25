@@ -35,12 +35,14 @@ class Brand(models.Model):
         return self.name
 
 class Product(models.Model):
+    Availability = (('In Stock','In stock'),('Out Of Stoke','Out Of Stoke'))
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default='')
     subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE,default='',related_name='subcategory')
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to='product/img')
     name = models.CharField(max_length=100)
     price = models.IntegerField()
+    availability = models.CharField(choices=Availability, null=True, max_length=100)
     date = models.DateField(auto_now_add=True)
     
     def __str__(self) -> str:
