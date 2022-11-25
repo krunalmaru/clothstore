@@ -43,6 +43,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100)
     price = models.IntegerField()
     availability = models.CharField(choices=Availability, null=True, max_length=100)
+    description = models.TextField(null=True)
     date = models.DateField(auto_now_add=True)
     
     def __str__(self) -> str:

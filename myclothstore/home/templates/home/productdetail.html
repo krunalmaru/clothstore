@@ -190,15 +190,15 @@
                             <img src="images/product-details/rating.png" alt="" />
                             <span>
                                 <span>₹ {{product.price}}</span>
-                                <input type="text" value="3" />
-                                <button type="button" class="btn btn-fefault cart">
+                                <!-- <input type="text" value="3" /> -->
+                                <a href="{% url 'cart_add' product.id %}" type="button" class="btn btn-fefault cart">
                                     <i class="fa fa-shopping-cart"></i>
                                     Add to cart
-                                </button>
+                                </a>
                             </span>
-                            <p><b>Availability:</b> In Stock</p>
+                            <p><b>Availability:</b> {{product.availability}}</p>
                             <p><b>Condition:</b> New</p>
-                            <p><b>Brand:</b> E-CLOTHSTORE</p>
+                            <p><b>Brand:</b> {{product.brand}}</p>
                             <a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>
                         </div><!--/product-information-->
                     </div>
