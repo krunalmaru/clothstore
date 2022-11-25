@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from home.models import UsercreateForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from cart.cart import Cart
 
 # Create your views here.
@@ -49,13 +50,20 @@ def product(request):
     category = Category.objects.all()
     categoryid = request.GET.get('category')
 
+
+
     if brandId:
         products = Product.objects.filter(brand=brandId).order_by('-id')
     elif categoryid:
         products = Product.objects.filter(subcategory=categoryid).order_by('-id')
     else:
         products = Product.objects.all()
-    context = {'product':products,'brand':brand,'category':category}
+    
+    paginator = Paginator(products,3 )
+    page_no = request.GET.get('page')
+    pageshow = paginator.get_page(page_no)
+    
+    context = {'product':pageshow,'brand':brand,'category':category}
 
     return render(request, 'home/product.html',context)
 

@@ -95,10 +95,21 @@
                     </div>
                     {% endfor  %}
                     <ul class="pagination">
-                        <li class="active"><a href="">1</a></li>
-                        <li><a href="">2</a></li>
-                        <li><a href="">3</a></li>
-                        <li><a href="">&raquo;</a></li>
+                        {% if product.has_previous %}
+                        <li><a href="/product/?page={{product.previous_page_number}}">&laquo;</a></li>
+                        {% endif %}
+                        
+                        {% for i in product.paginator.page_range %}
+                            {% if product.number == i %}
+                                <li class="active"> <a class="current" href="#">{{i}}</a></li>
+                            {% else %}
+                                <li > <a href="?page={{i}}">{{i}}</a></li>
+                            {% endif%}    
+                        {% endfor %}
+                        
+                        {% if product.has_next %}
+                        <li><a href="/product/?page={{product.next_page_number}}">&raquo;</a></li>
+                        {% endif %}
                     </ul>
                 </div><!--features_items-->
             </div>
