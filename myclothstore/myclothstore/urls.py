@@ -32,6 +32,8 @@ urlpatterns = [
     path('contact/', views.contact_us, name='contactus'),
     path('checkout/', views.checkout, name='checkout'),
     path('order/', views.order, name='yourorder'),
+    path('product/', views.product, name='product'),
+    path('productdetail/', views.productdetail, name='productdetail'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

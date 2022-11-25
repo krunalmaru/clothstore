@@ -34,7 +34,7 @@ def signup(request):
                 password = form.cleaned_data['password1'], 
             )
             login(request, new_user)
-            return redirect('home')
+            return redirect('home') 
     else:
         form = UsercreateForm()
 
@@ -42,6 +42,25 @@ def signup(request):
         'form':form,
     }
     return render(request, 'registration/signup.html',context)
+
+def product(request):
+    brand = Brand.objects.all()
+    brandId = request.GET.get('brand')
+    category = Category.objects.all()
+    categoryid = request.GET.get('category')
+
+    if brandId:
+        products = Product.objects.filter(brand=brandId).order_by('-id')
+    elif categoryid:
+        products = Product.objects.filter(subcategory=categoryid).order_by('-id')
+    else:
+        products = Product.objects.all()
+    context = {'product':products,'brand':brand,'category':category}
+
+    return render(request, 'home/product.html',context)
+
+def productdetail(request):
+    return render(request, 'home/productdetail.html')
 
 @login_required(login_url='/accounts/login/')
 def cart_add(request, id):
