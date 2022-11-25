@@ -59,8 +59,10 @@ def product(request):
 
     return render(request, 'home/product.html',context)
 
-def productdetail(request):
-    return render(request, 'home/productdetail.html')
+def productdetail(request, id):
+    product = Product.objects.filter(id=id).first()
+    context = {'product':product}
+    return render(request, 'home/productdetail.html', context)
 
 @login_required(login_url='/accounts/login/')
 def cart_add(request, id):
