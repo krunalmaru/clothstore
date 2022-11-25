@@ -1,0 +1,44 @@
+{% extends 'home/base.html' %}
+{% block main %}
+<div class="container">
+<div class="features_items"><!--features_items-->
+    <h2 class="title text-center">Search Result</h2>
+    {% if product|length < 1 %}
+    <div class="content-404">
+        <img src="images/404/404.png" class="img-responsive" alt="" />
+        <h1><b>OPPS!</b> We Couldn’t Find this Page</h1>
+        <p>Uh... There is no related data found.</p>
+        <h2><a href="{% url 'home' %}">Bring me back Home</a></h2><br>
+    </div>
+    {% endif %}
+    {% for i  in product %}
+    <div class="col-sm-4">
+        <div class="product-image-wrapper">
+            <div class="single-products">
+                    <div class="productinfo text-center">
+                        <img src="{{i.image.url}}" height="200px;"  alt="" />
+                        <h2>₹{{i.price}}</h2>
+                        <p>{{i.name}}</p>
+                        
+                        <a href="{% url 'cart_add' i.id %}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                    </div>
+                    <div class="product-overlay">
+                        <div class="overlay-content">
+                            <h2>₹{{i.price}}</h2>
+                            <p>{{i.name}}</p>
+                            <a href="{% url 'cart_add' i.id %}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                        </div>
+                    </div>
+            </div>
+            <div class="choose">
+                <ul class="nav nav-pills nav-justified">
+                    <li><a href="#"><i class="fa fa-plus-square"></i>View Product</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div><!--features_items-->
+</div>
+{% endblock %}

@@ -64,6 +64,12 @@ def productdetail(request, id):
     context = {'product':product}
     return render(request, 'home/productdetail.html', context)
 
+def search(request):
+    query = request.GET['query']
+    product = Product.objects.filter(name__icontains = query)
+    context = {'product':product}
+    return render(request, 'home/search.html', context)
+
 @login_required(login_url='/accounts/login/')
 def cart_add(request, id):
     cart = Cart(request)
