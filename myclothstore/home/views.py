@@ -21,7 +21,11 @@ def home(request):
         product = Product.objects.filter(brand=brandId).order_by('-id')
     else:
         product = Product.objects.all()
-    context = {'category':category,'product':product,'brands':brands}
+
+    paginator = Paginator(product,6 )
+    page_no = request.GET.get('page')
+    pageshow = paginator.get_page(page_no)
+    context = {'category':category,'product':pageshow,'brands':brands}
     return render(request, 'home/index.html', context)
 
 
@@ -49,9 +53,6 @@ def product(request):
     brandId = request.GET.get('brand')
     category = Category.objects.all()
     categoryid = request.GET.get('category')
-
-
-
     if brandId:
         products = Product.objects.filter(brand=brandId).order_by('-id')
     elif categoryid:
