@@ -3,7 +3,9 @@ from home.models import Category,SubCategory,Product,Contact_us, Order,Brand
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from home.models import UsercreateForm
+# from home.models import UsercreateForm
+from .forms import UsercreateForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -29,24 +31,42 @@ def home(request):
     return render(request, 'home/index.html', context)
 
 
-def signup(request):
+def signup(request):    
     if request.method == 'POST':
         form = UsercreateForm(request.POST)
         if form.is_valid():
             new_user = form.save()
-            new_user= authenticate(
-                username = form.cleaned_data['username'],
-                password = form.cleaned_data['password1'], 
-            )
             login(request, new_user)
-            return redirect('home') 
-    else:
-        form = UsercreateForm()
+            messages.success(request, "Registration successful." )
+            return redirect('login')        
+        messages.error(request, 'Invalid Information')
 
+    else:
+
+        form = UsercreateForm()
     context = {
         'form':form,
     }
     return render(request, 'registration/signup.html',context)
+
+    
+def login_user(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        # form = UsercreateForm()
+        username = request.POST.get('username')
+        password =request.POST.get('password')
+        user = authenticate(username=username, password=password)  
+        if user is not None:
+                login(request, user)        
+                return redirect('home')
+                          # messages.info(request, f"You are now logged in as {username}.")
+        else:
+            messages.error(request,"Invalid username or password.")
+            form = AuthenticationForm()
+
+    return render(request, 'registration/login.html',{'form':form} )    
+
 
 def product(request):
     brand = Brand.objects.all()
@@ -64,7 +84,7 @@ def product(request):
     page_no = request.GET.get('page')
     pageshow = paginator.get_page(page_no)
     
-    context = {'product':pageshow,'brand':brand,'category':category}
+    context = {'product':pageshow,'brand':brand,'category':category,'products':products}
 
     return render(request, 'home/product.html',context)
 
