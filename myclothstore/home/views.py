@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, HttpResponse
 from home.models import Category,SubCategory,Product,Contact_us, Order,Brand
 from django.contrib.auth import authenticate,login,logout
-from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 # from home.models import UsercreateForm
 from .forms import UsercreateForm
@@ -54,20 +54,21 @@ def login_user(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         # form = UsercreateForm()
-        username = request.POST.get('username')
-        password =request.POST.get('password')
-        user = authenticate(username=username, password=password)  
-        if user is not None:
-                login(request, user)        
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            
+            if user is not None:
+                login(request, user)
+                # messages.info(request, f"You are now logged in as {username}.")
                 return redirect('home')
-                          # messages.info(request, f"You are now logged in as {username}.")
         else:
             messages.error(request,"Invalid username or password.")
-            form = AuthenticationForm()
+    else:
+        form = AuthenticationForm()
 
     return render(request, 'registration/login.html',{'form':form} )    
-
-
 def product(request):
     brand = Brand.objects.all()
     brandId = request.GET.get('brand')
@@ -181,10 +182,21 @@ def checkout(request):
         return redirect('yourorder')
     return HttpResponse('this is checkout ')
 
+
+@login_required(login_url='/accounts/login/')
 def order(request):
     uid = request.session.get('_auth_user_id')
     user = User.objects.get(pk=uid)
-
     order = Order.objects.filter(user=user)
     context = {'order':order}
     return render(request, 'home/order.html', context)
+
+def paymentdone(request):
+    user = request.user
+    uid = request.session.get('_auth_user_id')
+    user = User.objects.get(pk=uid)
+    cart = Order.objects.filter(user=user)
+    for i in cart:
+        Order(user=user, product=i.product,quantity=i.quantity).save()
+    return redirect('yourorder')
+

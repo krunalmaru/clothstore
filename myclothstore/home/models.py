@@ -71,4 +71,4 @@ class Order(models.Model):
     date = models.DateField(default=datetime.datetime.today)
 
     def __str__(self) -> str:
-        return self.product
+        return self.user.username

@@ -1,5 +1,7 @@
 {% extends 'home/base.html' %}
 {% block main %}
+
+
 <section id="cart_items">
     <div class="container">
         <div class="breadcrumbs">
@@ -21,6 +23,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <form action="/paymentdone">
                     {% for i in order  %}
                       
                     <tr>
@@ -43,12 +46,9 @@
                             <p class="cart_total_price">₹ {{i.total}}</p>
                         </td>
                         
-                        <!-- <td class="cart_delete">
-                            <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-                        </td> -->
                     </tr>
                     {% endfor %}
-                    
+                    </form>
                 </tbody>
                 <tfoot>
                     <td></td>
